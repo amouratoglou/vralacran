@@ -27,6 +27,10 @@ const server = http.createServer((req, res) => {
       fs.rename(oldpath, newpath, function (err) {
         if (err) throw err;
         res.write('File uploaded and moved!');
+        // pude imprimir aca la URL usando la variable newpath
+        // pero no logro sacar esta variable afuera para pasarla a la
+        // linea de codigo 53
+        res.write('newpath');
         res.end();
       });
 
