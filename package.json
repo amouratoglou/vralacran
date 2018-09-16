@@ -1,0 +1,16 @@
+{
+  "name": "visualr",
+  "version": "1.0.0",
+  "main": "watsonvr.js",
+  "dependencies": {
+    "formidable": "^1.2.1",
+    "watson-developer-cloud": "^3.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
