@@ -2,9 +2,10 @@ const http = require('http');
 var formidable = require('formidable');
 
 const hostname = '127.0.0.1';
-const port = 3000;
+const port = 3500;
 
 var fs = require('fs');
+var newpath;
 
 /// WATSON
 
@@ -17,7 +18,8 @@ var visualRecognition = new VisualRecognitionV3({
 // SERVER AND FORM
 
 const server = http.createServer((req, res) => {
-
+  // formidable 
+  
   if (req.url == '/fileupload') {
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
@@ -26,12 +28,23 @@ const server = http.createServer((req, res) => {
      
       fs.rename(oldpath, newpath, function (err) {
         if (err) throw err;
-        res.write('File uploaded and moved!');
-        // pude imprimir aca la URL usando la variable newpath
-        // pero no logro sacar esta variable afuera para pasarla a la
-        // linea de codigo 53
-        res.write('newpath');
+        res.write('Uploaded :)');
+        // Watson API 
+
+        var images_file = fs.createReadStream(newpath);
+        var params = {
+          images_file: images_file,
+        };
+        
+        visualRecognition.classify(params, function(err, response) {
+          if (err)
+            console.log(err);
+          else
+            console.log(JSON.stringify(response, null, 2))
+        });
+        
         res.end();
+        
       });
 
 
@@ -49,21 +62,6 @@ const server = http.createServer((req, res) => {
 
 
 
-  // var images_file = fs.createReadStream(myFilePathTest);
- var images_file = fs.createReadStream('./alacran_venenoso.jpg');
-
-// var classifier_ids = ["alacran_venenoso"];
-
-var params = {
-  images_file: images_file,
-};
-
-visualRecognition.classify(params, function(err, response) {
-  if (err)
-    console.log(err);
-  else
-    console.log(JSON.stringify(response, null, 2))
-});
 
 
 // ENDS
